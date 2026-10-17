@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b0f14">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>تحضير مباراة مهندس دولة — المعلوميات</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<style>
+  :root{
+    --bg:#0b0f14; --surface:#121822; --surface2:#182130; --line:#223046;
+    --text:#e8eef7; --muted:#8b9bb0; --accent:#3ddc97; --accent2:#5b8cff;
+    --warn:#ffb020; --bad:#ff6b6b; --radius:16px;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text)}
+  body{
+    font-family:"Noto Naskh Arabic","Segoe UI",system-ui,-apple-system,Tahoma,sans-serif;
+    line-height:1.85; font-size:16px; padding-bottom:84px;
+  }
+  a{color:var(--accent2);text-decoration:none}
+  header.appbar{
+    position:sticky; top:0; z-index:20; backdrop-filter:blur(12px);
+    background:rgba(11,15,20,.86); border-bottom:1px solid var(--line);
+    padding:12px 14px; display:flex; align-items:center; gap:8px;
+  }
+  header .brand{font-weight:800; font-size:15px; line-height:1.4}
+  header .sub{color:var(--muted); font-size:12px; margin-top:-2px}
+  main{max-width:760px; margin:0 auto; padding:16px}
+  section{display:none; animation:fade .18s ease}
+  section.active{display:block}
+  @keyframes fade{from{opacity:.4;transform:translateY(4px)}to{opacity:1;transform:none}}
+  .card{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:16px; margin-bottom:12px}
+  .card h3{margin:0 0 8px; font-size:15px}
+  .muted{color:var(--muted); font-size:13px}
+  .row{display:flex; gap:10px; align-items:center}
+  .spread{display:flex; justify-content:space-between; align-items:center; gap:10px}
+  .btn{
+    appearance:none; border:1px solid var(--line); background:var(--surface2); color:var(--text);
+    border-radius:12px; padding:12px 16px; font-family:inherit; font-size:15px; font-weight:700;
+    cursor:pointer; min-height:46px;
+  }
+  .btn:active{transform:scale(.99)}
+  .btn.primary{background:var(--accent); color:#07110c; border-color:transparent}
+  .btn.ghost{background:transparent}
+  .btn.wide{width:100%}
+  .btn.small{padding:8px 12px; min-height:38px; font-size:13px; border-radius:10px}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+  .stat{background:var(--surface2); border:1px solid var(--line); border-radius:12px; padding:12px; text-align:center}
+  .stat b{display:block; font-size:20px; line-height:1.3}
+  .stat span{color:var(--muted); font-size:12px}
+  .bar{height:10px; background:var(--surface2); border-radius:99px; overflow:hidden; border:1px solid var(--line)}
+  .bar > i{display:block; height:100%; background:linear-gradient(90deg,var(--accent),var(--accent2)); width:0%}
+  .mod{background:var(--surface); border:1px solid var(--line); border-radius:14px; margin-bottom:10px; overflow:hidden}
+  .mod > .head{padding:14px 16px; display:flex; justify-content:space-between; align-items:center; gap:12px; cursor:pointer}
+  .mod .ico{font-size:20px}
+  .mod .title{font-weight:800; font-size:15px}
+  .mod .meta{color:var(--muted); font-size:12px}
+  .mod .lessons{display:none; border-top:1px solid var(--line)}
+  .mod.open .lessons{display:block}
+  .lesson{display:flex; justify-content:space-between; gap:10px; align-items:center; padding:13px 16px; border-bottom:1px solid var(--line); cursor:pointer}
+  .lesson:last-child{border-bottom:0}
+  .lesson .lt{font-size:14.5px}
+  .lesson.done .lt{color:var(--accent)}
+  .tick{font-size:13px; color:var(--muted); white-space:nowrap}
+  .tick.ok{color:var(--accent); font-weight:700}
+  nav.tabs{position:fixed; bottom:0; left:0; right:0; z-index:30; background:rgba(11,15,20,.95);
+    backdrop-filter:blur(12px); border-top:1px solid var(--line); display:grid; grid-template-columns:repeat(4,1fr);
+    padding:6px 6px calc(6px + env(safe-area-inset-bottom))}
+  nav.tabs button{appearance:none;background:none;border:0;color:var(--muted);font-family:inherit;
+    font-size:11.5px; padding:6px 2px; display:flex; flex-direction:column; align-items:center; gap:3px; cursor:pointer}
+  nav.tabs button .i{font-size:19px; line-height:1}
+  nav.tabs button.on{color:var(--accent)}
+  .overlay{position:fixed; inset:0; background:var(--bg); z-index:40; display:none; overflow-y:auto}
+  .overlay.show{display:block}
+  .ov-head{position:sticky; top:0; background:rgba(11,15,20,.95); backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line); padding:12px 16px; display:flex; gap:10px; align-items:center; z-index:2}
+  .ov-body{max-width:760px; margin:0 auto; padding:18px 16px 40px}
+  .ov-body h1{font-size:20px; margin:0 0 10px}
+  .ov-body h2{font-size:17px; margin:22px 0 8px; color:var(--accent)}
+  .ov-body p{margin:10px 0}
+  .ov-body ul,.ov-body ol{padding-right:22px; margin:10px 0}
+  .ov-body li{margin:6px 0}
+  .ov-body code{background:var(--surface2); border:1px solid var(--line); border-radius:6px; padding:1px 6px; font-size:13.5px; direction:ltr; display:inline-block}
+  .ov-body b{color:#fff}
+  .opt{display:block; width:100%; text-align:start; padding:14px; margin:8px 0; border-radius:12px;
+    border:1px solid var(--line); background:var(--surface2); color:var(--text); font-family:inherit; font-size:15px; cursor:pointer}
+  .opt.correct{border-color:var(--accent); background:rgba(61,220,151,.12)}
+  .opt.wrong{border-color:var(--bad); background:rgba(255,107,107,.12)}
+  .opt[disabled]{cursor:default; opacity:.95}
+  .qmeta{color:var(--muted); font-size:12.5px; margin-bottom:6px}
+  .why{border-right:3px solid var(--accent); background:var(--surface2); padding:12px 14px; border-radius:10px; margin-top:12px; font-size:14.5px}
+  .timer{font-variant-numeric:tabular-nums; font-size:44px; font-weight:800; text-align:center; letter-spacing:2px; margin:6px 0}
+  .pill{display:inline-block; padding:3px 10px; border-radius:99px; font-size:11.5px; border:1px solid var(--line); color:var(--muted)}
+  .toast{position:fixed; bottom:96px; left:50%; transform:translateX(-50%); background:var(--surface2);
+    border:1px solid var(--line); color:var(--text); padding:10px 16px; border-radius:12px; font-size:13.5px;
+    opacity:0; pointer-events:none; transition:opacity .2s; z-index:60; max-width:90vw; text-align:center}
+  .toast.show{opacity:1}
+  .empty{text-align:center; color:var(--muted); padding:26px 10px; font-size:14px}
+  .langs{display:flex; gap:3px; background:var(--surface2); border:1px solid var(--line); border-radius:10px; padding:3px}
+  .langs button{appearance:none;border:0;background:none;color:var(--muted);font-family:inherit;
+    font-size:12px;font-weight:700;padding:5px 7px;border-radius:7px;cursor:pointer;min-width:28px}
+  .langs button.on{background:var(--accent);color:#07110c}
+  .banner{border:1px solid var(--line); background:var(--surface2); border-radius:12px; padding:12px 14px;
+    color:var(--muted); font-size:13.5px; margin-bottom:14px}
+  .banner b{color:var(--text)}
+  .sums{margin:6px 0 0}
+  .sums li{margin:8px 0}
+  details.full{margin-top:20px; border-top:1px solid var(--line); padding-top:12px}
+  details.full summary{cursor:pointer; color:var(--accent2); font-size:13.5px; font-weight:700}
+  html[dir="ltr"] body{font-family:"Segoe UI",system-ui,-apple-system,Tahoma,sans-serif}
+  html[dir="ltr"] .ov-body ul, html[dir="ltr"] .ov-body ol{padding-right:0; padding-left:22px}
+  html[dir="ltr"] .why{border-right:0; border-left:3px solid var(--accent)}
+</style>
+</head>
+<body>
+
+<header class="appbar">
+  <div style="flex:1; min-width:0">
+    <div class="brand" id="brandTxt">تحضير مباراة مهندس دولة</div>
+    <div class="sub" id="hdrSub">المعلوميات · 0/120</div>
+  </div>
+  <span class="pill" id="hdrPct">0%</span>
+  <div class="langs" id="langSwitch">
+    <button data-lang="ar">ع</button><button data-lang="fr">FR</button><button data-lang="en">EN</button>
+  </div>
+</header>
+
+<main>
+  <section id="tab-home" class="active">
+    <div class="card">
+      <div class="spread" style="margin-bottom:10px">
+        <h3 style="margin:0" data-i18n="progress">التقدم العام</h3>
+        <span class="muted"><span id="doneLessons">0</span>/<span id="totalLessons">0</span> <span data-i18n="lessonsOf">درس</span></span>
+      </div>
+      <div class="bar" style="margin-bottom:12px"><i id="progBar"></i></div>
+      <div class="grid2">
+        <div class="stat"><b id="statHours">0</b><span data-i18n="hoursDone">ساعة منجزة</span></div>
+        <div class="stat"><b id="statBlocks">0</b><span data-i18n="blocks">كتلة (75 د)</span></div>
+        <div class="stat"><b id="statQcm">—</b><span data-i18n="accuracy">دقة الأسئلة</span></div>
+        <div class="stat"><b id="statErrors">0</b><span data-i18n="errorsCount">أخطاء مسجّلة</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 data-i18n="block">بلوك الدراسة (75 دقيقة)</h3>
+      <div class="timer" id="timerText">1:15:00</div>
+      <div class="row" style="justify-content:center; gap:10px; flex-wrap:wrap">
+        <button class="btn primary" id="tStart" data-i18n="start">ابدأ</button>
+        <button class="btn" id="tPause" data-i18n="pause">إيقاف مؤقت</button>
+        <button class="btn ghost" id="tReset" data-i18n="reset">إعادة</button>
+      </div>
+      <p class="muted" style="margin-bottom:0" data-i18n="blockHint">عند إكمال البلوك تُضاف 1.25 ساعة إلى رصيدك تلقائياً.</p>
+    </div>
+
+    <div class="card">
+      <h3 data-i18n="nextLesson">الدرس القادم</h3>
+      <div id="nextLesson" class="muted">—</div>
+      <button class="btn primary wide" id="startNext" style="margin-top:12px" data-i18n="openLesson">افتح الدرس</button>
+    </div>
+
+    <div class="card">
+      <h3 data-i18n="quickQuiz">اختبار سريع</h3>
+      <p class="muted" data-i18n="quickQuizDesc">10 أسئلة عشوائية من كل المحاور — 5 دقائق.</p>
+      <button class="btn wide" id="quickQuiz" data-i18n="start10">ابدأ 10 أسئلة</button>
+    </div>
+  </section>
+
+  <section id="tab-program">
+    <div class="card">
+      <h3 data-i18n="programTitle">البرنامج</h3>
+      <p class="muted" style="margin:0" data-i18n="programHint">اضغط على محور لفتح دروسه. علّم الدرس كمُنجز بعد قراءته.</p>
+    </div>
+    <div id="modules"></div>
+  </section>
+
+  <section id="tab-qcm">
+    <div class="card">
+      <h3 data-i18n="qcmTitle">بنك الأسئلة</h3>
+      <p class="muted" style="margin-top:0" data-i18n="qcmHint">اختر محوراً أو اختباراً شاملاً. كل خطأ يُحفظ في دفتر الأخطاء بنفسه.</p>
+      <div id="quizChoices"></div>
+      <button class="btn primary wide" id="startAll" style="margin-top:6px" data-i18n="allTest">اختبار شامل (كل الأسئلة)</button>
+    </div>
+  </section>
+
+  <section id="tab-errors">
+    <div class="card spread">
+      <div>
+        <h3 style="margin:0" data-i18n="errorsTitle">دفتر الأخطاء</h3>
+        <p class="muted" style="margin:2px 0 0" id="errCountLine">0</p>
+      </div>
+      <button class="btn small ghost" id="clearErrors" data-i18n="clearAll">مسح الكل</button>
+    </div>
+    <div id="errorsList"></div>
+  </section>
+</main>
+
+<nav class="tabs">
+  <button data-tab="home" class="on"><span class="i">◉</span><span data-i18n="tabHome">الرئيسية</span></button>
+  <button data-tab="program"><span class="i">▤</span><span data-i18n="tabProgram">البرنامج</span></button>
+  <button data-tab="qcm"><span class="i">✎</span><span data-i18n="tabQcm">الأسئلة</span></button>
+  <button data-tab="errors"><span class="i">⚑</span><span data-i18n="tabErrors">الأخطاء</span></button>
+</nav>
+
+<div class="overlay" id="overlay">
+  <div class="ov-head">
+    <button class="btn small ghost" id="ovBack" data-i18n="back">رجوع</button>
+    <div style="flex:1" class="muted" id="ovLabel"></div>
+  </div>
+  <div class="ov-body" id="ovBody"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="data.js"></script>
+<script src="data2.js"></script>
+<script src="qcm.js"></script>
+<script src="lang.js"></script>
+<script src="fr.js"></script>
+<script src="en.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
