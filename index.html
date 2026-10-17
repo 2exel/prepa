@@ -115,6 +115,28 @@
   html[dir="ltr"] body{font-family:"Segoe UI",system-ui,-apple-system,Tahoma,sans-serif}
   html[dir="ltr"] .ov-body ul, html[dir="ltr"] .ov-body ol{padding-right:0; padding-left:22px}
   html[dir="ltr"] .why{border-right:0; border-left:3px solid var(--accent)}
+  /* --- رسومات توضيحية --- */
+  .dg{border:1px solid var(--line); border-radius:12px; padding:12px; margin:16px 0; background:var(--surface2)}
+  .dg .cap{font-size:12px; color:var(--muted); margin-bottom:8px}
+  .dg .l{display:flex; align-items:center; gap:8px; padding:8px 10px; border-radius:8px; margin:5px 0;
+        background:var(--surface); border:1px solid var(--line); font-size:13.5px}
+  .dg .l b{min-width:96px; font-size:13px}
+  .dg .l .p{margin-inline-start:auto; color:var(--muted); font-size:12px; text-align:end}
+  .dg .l.hot{border-color:var(--accent); background:rgba(61,220,151,.10)}
+  .dg .arr{text-align:center; color:var(--muted); font-size:12px; margin:2px 0}
+  .dgb{display:flex; border:1px solid var(--line); border-radius:8px; overflow:hidden; margin:8px 0}
+  .dgb span{flex:1; padding:9px 4px; text-align:center; font-size:11.5px; border-inline-end:1px solid var(--line); background:var(--surface)}
+  .dgb span:last-child{border-inline-end:0}
+  .dgb span.hot{background:rgba(61,220,151,.14); color:var(--accent); font-weight:700}
+  .dgb span small{display:block; color:var(--muted); font-size:10.5px}
+  .dbits{display:grid; grid-template-columns:repeat(8,1fr); gap:4px; margin:8px 0; direction:ltr}
+  .dbits div{background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:6px 0;
+             text-align:center; font-size:12px; line-height:1.35}
+  .dbits div b{display:block; font-size:13px}
+  .dbits div small{color:var(--muted); font-size:10.5px}
+  .dcols{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:8px 0}
+  .dcols > div{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:10px; font-size:12.5px}
+  .dcols > div h4{margin:0 0 4px; font-size:12.5px; color:var(--accent)}
 </style>
 </head>
 <body>
@@ -219,14 +241,17 @@
 
 <div class="toast" id="toast"></div>
 
-<script src="data.js?v=7"></script>
-<script src="data2.js?v=7"></script>
-<script src="qcm.js?v=7"></script>
-<script src="lang.js?v=7"></script>
-<script src="fr.js?v=7"></script>
-<script src="en.js?v=7"></script>
-<script src="bodies-fr.js?v=7"></script>
-<script src="bodies-en.js?v=7"></script>
-<script src="app.js?v=7"></script>
+<script src="data.js?v=9"></script>
+<script src="data2.js?v=9"></script>
+<script src="qcm.js?v=9"></script>
+<script src="lang.js?v=9"></script>
+<script src="fr.js?v=9"></script>
+<script src="en.js?v=9"></script>
+<script src="bodies-fr.js?v=9"></script>
+<script src="bodies-en.js?v=9"></script>
+<script src="bodies-m1-ar.js?v=9"></script>
+<script src="bodies-m1-fr.js?v=9"></script>
+<script src="bodies-m1-en.js?v=9"></script>
+<script src="app.js?v=9"></script>
 </body>
 </html>
