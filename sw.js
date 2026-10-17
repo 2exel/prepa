@@ -1,4 +1,4 @@
-const CACHE = "prep-v3";
+const CACHE = "prep-v6";
 const ASSETS = ["./", "./index.html", "./data.js", "./data2.js", "./qcm.js", "./lang.js", "./fr.js", "./en.js", "./bodies-fr.js", "./bodies-en.js", "./app.js", "./manifest.webmanifest", "./icon.svg"];
 
 self.addEventListener("install", e => {
