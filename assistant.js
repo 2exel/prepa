@@ -204,7 +204,7 @@
     if(sys) body.systemInstruction = {parts: [{text: sys}]};
     const r = await fetch(url, {method:"POST", headers:{"content-type":"application/json"}, body: JSON.stringify(body)});
     const txt = await r.text();
-    if(r.status === 400 || r.status === 401 || r.status === 403){
+    if(r.status === 400 || r.status === 401 || r.status === 403 || r.status === 404){
       if(allowDiscover && isModelError(r.status, txt)){
         const found = await discoverModel(pid, key);
         if(found){ cfg.providers[pid].model = found; saveCfg(); return callOne(pid, key, messages, false); }
