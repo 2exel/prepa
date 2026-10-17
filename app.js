@@ -152,7 +152,10 @@
     const title = lessonTitle(l);
     const sums = sumOf(l);
     let html = `<h1>${esc(title)}</h1>`;
-    if(LANG !== "ar" && sums){
+    const full = (window.BODIES && window.BODIES[LANG] && window.BODIES[LANG][l.id]) || null;
+    if(full){
+      html += full;
+    }else if(LANG !== "ar" && sums){
       html += `<div class="banner"><b>${esc(t("summaryTitle"))} — ${esc(modTitle(m))}</b><br>${esc(t("arOnly"))}</div>
         <ul class="sums">${sums.map(s => "<li>" + esc(s) + "</li>").join("")}</ul>
         <details class="full"><summary>${esc(t("fullAr"))}</summary>${l.body}</details>`;
