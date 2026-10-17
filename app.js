@@ -66,17 +66,19 @@
     $$("[data-i18n]").forEach(el => { el.textContent = t(el.getAttribute("data-i18n")); });
     $("#brandTxt").textContent = t("appTitle");
     $("#hdrSub").textContent = t("appSub") + " · " + (Math.round(S.hours*10)/10) + "/120 " + HOUR_WORD[LANG];
-    $$("#langSwitch button").forEach(b => b.classList.toggle("on", b.getAttribute("data-lang") === LANG));
+    $$(".langs button").forEach(b => b.classList.toggle("on", b.getAttribute("data-lang") === LANG));
     document.title = t("appTitle") + " — " + t("appSub");
     renderHome(); renderProgram(); renderQuizChoices(); renderErrors();
   }
-  $$("#langSwitch button").forEach(b => b.addEventListener("click", () => {
-    LANG = b.getAttribute("data-lang");
-    try{ localStorage.setItem(LKEY, LANG); }catch(e){}
-    closeOverlay();
-    applyLang();
-    toast(LANG === "ar" ? "العربية" : (LANG === "fr" ? "Français" : "English"));
-  }));
+  function bindLangSwitch(){
+    $$(".langs button").forEach(b => b.addEventListener("click", () => {
+      LANG = b.getAttribute("data-lang");
+      try{ localStorage.setItem(LKEY, LANG); }catch(e){}
+      applyLang();
+      if($("#overlay").classList.contains("show")) rerenderOverlay();
+      toast(LANG === "ar" ? "العربية" : (LANG === "fr" ? "Français" : "English"));
+    }));
+  }
 
   /* ---------- التنقل ---------- */
   function go(tab){
@@ -148,7 +150,9 @@
   }
 
   /* ---------- الدرس ---------- */
+  let overlayState = null;
   function openLesson(m, l){
+    overlayState = {type: "lesson", m, l};
     const title = lessonTitle(l);
     const sums = sumOf(l);
     let html = `<h1>${esc(title)}</h1>`;
@@ -186,8 +190,19 @@
   }
   $("#ovBack").onclick = closeOverlay;
   function closeOverlay(){
+    overlayState = null;
     $("#overlay").classList.remove("show");
     $("#ovBody").innerHTML = "";
+  }
+  function rerenderOverlay(){
+    if(!overlayState) return;
+    const y = window.scrollY;
+    if(overlayState.type === "lesson"){
+      openLesson(overlayState.m, overlayState.l);
+    }else if(overlayState.type === "quiz" && quiz){
+      if(quiz.i >= quiz.list.length) renderResult(); else renderQuestion();
+    }
+    window.scrollTo({top: y});
   }
 
   /* ---------- الاختبارات ---------- */
@@ -213,7 +228,8 @@
 
   let quiz = null;
   function startQuiz(indices, label){
-    quiz = {list: indices, i: 0, correct: 0, label};
+    overlayState = {type: "quiz"};
+    quiz = {list: indices, i: 0, correct: 0, label, done: {}};
     $("#ovLabel").textContent = label || "";
     $("#overlay").classList.add("show");
     window.scrollTo({top:0});
@@ -239,16 +255,12 @@
       b.onclick = () => answer(k, q, opts);
       opts.appendChild(b);
     });
+    if(quiz.done && quiz.done[quiz.i] !== undefined) paintAnswer(quiz.done[quiz.i], q, opts);
     window.scrollTo({top:0});
   }
 
   function answer(k, q, opts){
-    const buttons = Array.from(opts.children);
-    buttons.forEach((b, idx) => {
-      b.disabled = true;
-      if(idx === q.a) b.classList.add("correct");
-      if(idx === k && k !== q.a) b.classList.add("wrong");
-    });
+    quiz.done[quiz.i] = k;
     S.asked += 1;
     if(k === q.a){
       S.correct += 1; quiz.correct += 1;
@@ -258,10 +270,19 @@
       S.errors.push(quiz.list[quiz.i]);
     }
     save();
+    paintAnswer(k, q, opts);
+  }
+
+  function paintAnswer(k, q, opts){
+    const buttons = Array.from(opts.children);
+    buttons.forEach((b, idx) => {
+      b.disabled = true;
+      if(idx === q.a) b.classList.add("correct");
+      if(idx === k && k !== q.a) b.classList.add("wrong");
+    });
     $("#whyBox").innerHTML = `<div class="why"><b>${esc(k === q.a ? t("correct") : t("incorrect"))}</b> ${esc(q.why)}</div>
       <button class="btn primary wide" id="nextQ" style="margin-top:14px">${esc(quiz.i + 1 < quiz.list.length ? t("next") : t("result"))}</button>`;
     $("#nextQ").onclick = () => { quiz.i += 1; renderQuestion(); };
-    $("#nextQ").scrollIntoView({behavior:"smooth", block:"center"});
   }
 
   function renderResult(){
@@ -341,6 +362,7 @@
   paintTimer();
 
   /* ---------- بدء ---------- */
+  bindLangSwitch();
   applyLang();
   window.addEventListener("hashchange", () => go((location.hash || "#home").slice(1)));
 
