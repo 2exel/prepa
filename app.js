@@ -154,9 +154,10 @@
   function openLesson(m, l){
     overlayState = {type: "lesson", m, l};
     const title = lessonTitle(l);
+    const full = (window.BODIES && window.BODIES[LANG] && window.BODIES[LANG][l.id]) || null;
+    window.__lessonCtx = { title: title, text: String(full || l.body || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").slice(0, 2500) };
     const sums = sumOf(l);
     let html = `<h1>${esc(title)}</h1>`;
-    const full = (window.BODIES && window.BODIES[LANG] && window.BODIES[LANG][l.id]) || null;
     if(full){
       html += full;
     }else if(LANG !== "ar" && sums){
@@ -166,9 +167,11 @@
     }else{
       html += l.body;
     }
+    const askLabel = LANG === "ar" ? "اسأل المساعد" : (LANG === "fr" ? "Demander à l'assistant" : "Ask the assistant");
     html += `<div style="margin-top:26px; display:flex; gap:10px; flex-wrap:wrap">
         <button class="btn primary" id="markDone">${esc(S.lessons[l.id] ? t("unmarkDone") : t("markDone"))}</button>
         <button class="btn" id="lessonQuiz">${esc(t("testModule"))}</button>
+        <button class="btn" id="askAsst">✦ ${esc(askLabel)}</button>
       </div>`;
     $("#ovLabel").textContent = modTitle(m);
     $("#ovBody").innerHTML = html;
@@ -187,6 +190,8 @@
       if(!idx.length){ toast(t("noQuestions")); return; }
       startQuiz(shuffle(idx).slice(0, 10), modTitle(m));
     };
+    const askBtn = $("#askAsst");
+    if(askBtn) askBtn.onclick = () => { if(window.__askAssistantAboutLesson) window.__askAssistantAboutLesson(); };
   }
   $("#ovBack").onclick = closeOverlay;
   function closeOverlay(){
