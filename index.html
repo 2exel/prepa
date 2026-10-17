@@ -160,6 +160,19 @@
   .badge.ok{color:var(--accent); border-color:rgba(61,220,151,.45)}
   .badge.bad{color:var(--bad); border-color:rgba(255,107,107,.45)}
   .typing{display:inline-block; color:var(--muted); font-size:13px}
+  /* --- زر عائم + لوحة المساعد --- */
+  .fab{position:fixed; inset-inline-end:16px; bottom:96px; z-index:44; width:56px; height:56px; border-radius:50%;
+       border:0; background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#07110c;
+       font-size:24px; font-weight:800; box-shadow:0 8px 24px rgba(0,0,0,.45); cursor:pointer; display:none}
+  body:not(.nofab) .fab{display:block}
+  .sheet{position:fixed; inset:0; z-index:45; background:rgba(5,8,12,.55); backdrop-filter:blur(4px);
+         display:none; align-items:flex-end; justify-content:center}
+  .sheet.show{display:flex}
+  .sheet > .inner{width:100%; max-width:760px; background:var(--surface); border:1px solid var(--line);
+       border-radius:18px 18px 0 0; padding:14px 14px calc(14px + env(safe-area-inset-bottom));
+       max-height:86vh; display:flex; flex-direction:column; gap:8px}
+  .sheet-head{display:flex; align-items:center; justify-content:space-between; gap:8px}
+  #settings{z-index:60}
 </style>
 </head>
 <body>
@@ -302,19 +315,39 @@
 
 <div class="toast" id="toast"></div>
 
-<script src="data.js?v=10"></script>
-<script src="data2.js?v=10"></script>
-<script src="qcm.js?v=10"></script>
-<script src="lang.js?v=10"></script>
-<script src="fr.js?v=10"></script>
-<script src="en.js?v=10"></script>
-<script src="bodies-fr.js?v=10"></script>
-<script src="bodies-en.js?v=10"></script>
-<script src="bodies-m1-ar.js?v=10"></script>
-<script src="bodies-m1-fr.js?v=10"></script>
-<script src="bodies-m1-en.js?v=10"></script>
-<script src="asst-lang.js?v=10"></script>
-<script src="app.js?v=10"></script>
-<script src="assistant.js?v=10"></script>
+<button class="fab" id="fab" aria-label="assistant">✦</button>
+
+<div class="sheet" id="sheet">
+  <div class="inner">
+    <div class="sheet-head">
+      <b data-asst="asstTitle">المساعد</b>
+      <div class="row" style="gap:6px">
+        <button class="btn small" id="sheetSettings" data-asst="settings">الإعدادات</button>
+        <button class="btn small ghost" id="sheetClose" aria-label="close">✕</button>
+      </div>
+    </div>
+    <div class="chat" id="chat2"></div>
+    <div class="composer">
+      <textarea id="asstInput2" rows="2" data-asst-ph="placeholder" placeholder="اكتب سؤالك…"></textarea>
+      <button class="btn primary" id="asstSend2" data-asst="send">إرسال</button>
+    </div>
+    <div class="muted" id="asstHint2"></div>
+  </div>
+</div>
+
+<script src="data.js?v=11"></script>
+<script src="data2.js?v=11"></script>
+<script src="qcm.js?v=11"></script>
+<script src="lang.js?v=11"></script>
+<script src="fr.js?v=11"></script>
+<script src="en.js?v=11"></script>
+<script src="bodies-fr.js?v=11"></script>
+<script src="bodies-en.js?v=11"></script>
+<script src="bodies-m1-ar.js?v=11"></script>
+<script src="bodies-m1-fr.js?v=11"></script>
+<script src="bodies-m1-en.js?v=11"></script>
+<script src="asst-lang.js?v=11"></script>
+<script src="app.js?v=11"></script>
+<script src="assistant.js?v=11"></script>
 </body>
 </html>
